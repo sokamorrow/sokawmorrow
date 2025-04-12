@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Letter</title>
+  <link rel="icon" type="image/png" href="images/TabIcon.jpg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #ff6b6b;
+      --secondary-color: #ffffff;
+      --background-color: rgba(0, 0, 0, 0.3);
+      --text-color: #ffffff;
+      --hover-color: #ff8787;
+      --card-bg: rgba(150, 198, 199, 0.5);
+      --text-light: #f8f9fa;
+      --highlight-color: #f8bbd0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-color);
+      margin: 0;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      filter: brightness(0.6);
+    }
+
+    .bg-video video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 0;
+      margin-bottom: 1rem;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .logo:hover {
+      color: var(--hover-color);
+    }
+
+    .main-content {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 3rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      margin: 2rem 0;
+      animation: fadeIn 1s ease-out;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: var(--text-color);
+      position: relative;
+      display: inline-block;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--primary-color);
+      border-radius: 2px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
+
+    .highlight {
+      color: var(--highlight-color);
+      font-weight: 500;
+    }
+
+    .letter-content {
+      margin: 2rem 0;
+      padding: 0 1rem;
+    }
+
+    .letter-paragraph {
+      margin-bottom: 2rem;
+      text-align: justify;
+      line-height: 1.8;
+    }
+
+    .signature {
+      font-style: italic;
+      text-align: right;
+      margin-top: 3rem;
+      font-size: 1.2rem;
+    }
+
+    .heart {
+      color: var(--primary-color);
+      animation: heartbeat 1.5s infinite;
+      display: inline-block;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .memory-section {
+      margin: 3rem 0;
+    }
+
+    .memory-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .memory-card {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .memory-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      background: rgba(255, 107, 107, 0.3);
+      border-color: var(--primary-color);
+    }
+
+    .memory-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--highlight-color);
+    }
+
+    .contact-section {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .contact-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: white;
+      background-color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      box-shadow: 0 4px 6px rgba(255, 107, 107, 0.3);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(255, 107, 107, 0.4);
+      background-color: var(--hover-color);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .copied-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(76, 175, 80, 0.9);
+      color: #ffffff;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      z-index: 100;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .copied-notification.show {
+      opacity: 1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--text-color);
+      margin-top: auto;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      color: var(--text-color);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--hover-color);
+      transform: translateY(-3px);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .main-content {
+        padding: 2rem 1rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .contact-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .letter-paragraph {
+        text-align: left;
+      }
+    }
+
+    /* Animation for floating elements */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    /* Falling hearts animation */
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .heart-fall {
+      position: absolute;
+      color: var(--highlight-color);
+      opacity: 0;
+      animation: fall linear infinite;
+    }
+    
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Video -->
+  <div class="bg-video">
+    <video autoplay muted loop>
+      <source src="images/background.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+  </div>
+  
+  <!-- Falling hearts -->
+  <div class="hearts" id="hearts"></div>
+
+  <div class="container">
+    <header>
+      <a href="#" class="logo">Depart</a>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content floating">
+      <h1>Brought and skedadled<span class="heart">👋</span></h1>
+      
+      <div class="letter-content">
+        <p class="letter-paragraph">Before grade 10 started, I noticed you were always online late at night. So I stayed up too, hoping—just maybe—you'd ask me to voice call. For a few days, I just waited quietly. Then you started sending me TikToks—small things that somehow meant the world to me. Then one night, you finally asked me to call. We played, we talked, we laughed—and in those moments, everything felt so light, so right.</p>
+        
+        <p class="letter-paragraph">A few nights later, past midnight, you told me you loved me. You said it might be friendly, or normal, or maybe even something more. I was stunned. I was happy. Because I loved you too—a lot. But I never said it, because I was scared. Scared of ruining what we had, scared that maybe it wouldn't be returned the way I hoped. But that night, I let my guard down. Our conversations became flirty, unfiltered, open. I could be goofy. I could be myself. For once, I didn't have to hide. And in that exact moment, it felt like you were mine.</p>
+        
+        <p class="letter-paragraph">But moments don't last forever. As the quarter went on, we started to drift. I don't even really know why—we just stopped talking the same way. Then we slowly found our way back, only in group chats, only around friends. Another week or two passed, and we called again, but not like before. It wasn't just us. And I could feel it—things weren't the same.</p>
+        
+        <p class="letter-paragraph">Now we've reached the end, and after moving up, you're leaving. Maybe that's why I'm writing this—because I know this is my last chance to say what I never had the courage to before. I know this message probably has holes, points that feel disconnected or moments you might not even remember. But I do. I remember all of it.</p>
+        
+        <p class="letter-paragraph">I cherish every moment we spent together. I really do.
+          You were a wonderful experience. And an even better friend.
+          I loved how your eyes would dilate when you looked at me.
+          You probably didn’t even notice, but I did.</p>
+        
+        <p class="letter-paragraph">There are things I regret—like never asking you to be my Valentine, even though I really wanted to. Or the times I said things that came out wrong, and you took them the wrong way. I wish I could take those moments back. I wish I could've explained myself better.</p>
+        
+        <p class="letter-paragraph">I'm sorry for always asking for reassurance.</p>
+        
+        <p class="letter-paragraph">I'm sorry if I turned out to be different than what you expected.</p>
+        
+        <p class="letter-paragraph">I'm sorry for not trusting you more.</p>
+        
+        <p class="letter-paragraph">I'm sorry for being boring sometimes.</p>
+        
+        <p class="letter-paragraph">Trust is a beautiful thing, and I mishandled it. I let my doubts get the better of me when you probably never gave me a reason to doubt you at all.</p>
+        
+        <p class="letter-paragraph">But despite all that, you were a constant comfort, a light in my life.
+          You’re my friend—and damn, a pretty good one.</p>
+        
+        <p class="letter-paragraph">These last few days I spent with you this April were some of the most memorable ones I've had. Thank you for still inviting me to come along, for still letting me be there—for aya'ing me to come and gala. That meant so much more to me than you probably realized.</p>
+        
+        <p class="letter-paragraph">And now, as everything winds down, I just want you to know:</p>
+        
+        <p class="letter-paragraph">I don’t think I can love someone the way I loved you. Maybe I never will.
+          But I’m thankful. I’m thankful for the memories, for the laughter, for the feelings, even the hard ones.</p>
+        
+        <p class="letter-paragraph">This is my confession, my goodbye, and my final thank you.
+          Even if nothing more comes of this, even if this all fades with time,
+          you’ll always have a place in my heart.</p>
+        
+          <div class="signature">
+            <p>With love,</p>
+            <p>JBaldo</p>
+            <p>sorry if this sounds corny ok byebye:)</p>
+          </div>
+        </div>
+      
+
+      <div class="memory-section">
+        <h2>Memories I'll Keep</h2>
+        <p>Small moments that meant the world to me</p>
+        
+        <div class="memory-list">
+          <div class="memory-card">
+            <div class="memory-icon"><i class="fas fa-moon"></i></div>
+            <p>Late night calls</p>
+          </div>
+          <div class="memory-card">
+            <div class="memory-icon"><i class="fas fa-gamepad"></i></div>
+            <p>Playing games together</p>
+          </div>
+          <div class="memory-card">
+            <div class="memory-icon"><i class="fas fa-film"></i></div>
+            <p>TikToks you shared</p>
+          </div>
+          <div class="memory-card">
+            <div class="memory-icon"><i class="fas fa-heart"></i></div>
+            <p>When you said you loved me</p>
+          </div>
+          <div class="memory-card">
+            <div class="memory-icon"><i class="fas fa-laugh-squint"></i></div>
+            <p>Your laugh</p>
+          </div>
+          <div class="memory-card">
+            <div class="memory-icon"><i class="fas fa-eye"></i></div>
+            <p>How your eyes looked at me</p>
+          </div>
+        </div>
+      </div>
+
+  <!-- Audio Element (hidden) -->
+  <audio id="bgMusic" loop autoplay>
+    <source src="music/background.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Background Music
+    const bgMusic = document.getElementById('bgMusic');
+    
+    // Set volume (0.0 to 1.0) - adjust this value to change the volume
+    bgMusic.volume = 0.2; // 20% volume - change this number as needed
+
+    // Try to autoplay the music (may be blocked by browser)
+    document.addEventListener('DOMContentLoaded', () => {
+      const playPromise = bgMusic.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log('Autoplay was prevented:', error);
+          // Music will start when user interacts with page
+        });
+      }
+    });
+
+    // Start music on any user interaction if it was blocked
+    document.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play().catch(error => {
+          console.log('Playback still prevented:', error);
+        });
+      }
+    }, { once: true });
+
+    // Create falling hearts
+    function createHearts() {
+      const heartsContainer = document.getElementById('hearts');
+      const heartCount = 20;
+      
+      for (let i = 0; i < heartCount; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-fall');
+        heart.innerHTML = '❤';
+        
+        // Random position and animation duration
+        const leftPos = Math.random() * 100;
+        const animDuration = 10 + Math.random() * 20;
+        const delay = Math.random() * 15;
+        const size = 10 + Math.random() * 20;
+        
+        heart.style.left = `${leftPos}%`;
+        heart.style.animationDuration = `${animDuration}s`;
+        heart.style.animationDelay = `${delay}s`;
+        heart.style.fontSize = `${size}px`;
+        
+        heartsContainer.appendChild(heart);
+      }
+    }
+    
+    // Initialize falling hearts
+    createHearts();
+  </script>
+</body>
+</html>
