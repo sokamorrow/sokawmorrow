@@ -218,127 +218,6 @@
       color: var(--highlight-color);
     }
 
-    .contact-section {
-      text-align: center;
-      margin-top: 3rem;
-    }
-
-    .contact-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: white;
-      background-color: var(--primary-color);
-      text-decoration: none;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      padding: 0.8rem 1.8rem;
-      border-radius: 50px;
-      box-shadow: 0 4px 6px rgba(255, 107, 107, 0.3);
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 15px rgba(255, 107, 107, 0.4);
-      background-color: var(--hover-color);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary-color);
-      color: var(--primary-color);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary-color);
-      color: white;
-    }
-
-    .copied-notification {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: rgba(76, 175, 80, 0.9);
-      color: #ffffff;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-      z-index: 100;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .copied-notification.show {
-      opacity: 1;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem 0;
-      color: var(--text-color);
-      margin-top: auto;
-      backdrop-filter: blur(5px);
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 16px 16px 0 0;
-    }
-
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
-
-    .social-links a {
-      color: var(--text-color);
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .social-links a:hover {
-      color: var(--hover-color);
-      transform: translateY(-3px);
-    }
-
-    /* Music Toggle Button */
-    .music-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      background-color: var(--primary-color);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 1000;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    .music-toggle:hover {
-      transform: scale(1.1);
-      background-color: var(--hover-color);
-    }
-
-    .music-toggle i {
-      color: white;
-      font-size: 1.2rem;
-    }
-
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .container {
@@ -355,11 +234,6 @@
       
       h2 {
         font-size: 1.5rem;
-      }
-      
-      .contact-buttons {
-        flex-direction: column;
-        align-items: center;
       }
       
       .letter-paragraph {
@@ -513,49 +387,19 @@
           </div>
         </div>
       </div>
-
-      <div class="contact-section">
-        <h2>Stay in Touch</h2>
-        <p>If you'd ever like to talk again</p>
-        
-        <div class="contact-buttons">
-          <a href="#" class="btn"><i class="fas fa-envelope"></i> Email</a>
-          <a href="#" class="btn btn-outline"><i class="fas fa-comment"></i> Message</a>
-        </div>
-      </div>
     </main>
 
-    <footer>
-      <p>Created with <span class="heart">❤</span> by JBaldo</p>
-      <p id="year"></p>
-      <div class="social-links">
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-facebook"></i></a>
-      </div>
-    </footer>
-  </div>
-
   <!-- Audio Element (hidden) -->
-  <audio id="bgMusic" loop>
+  <audio id="bgMusic" loop autoplay>
     <source src="music/background.mp3" type="audio/mpeg">
     <source src="music/background.ogg" type="audio/ogg">
     <source src="music/background.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
-  <!-- Music Toggle Button -->
-  <div class="music-toggle" id="musicToggle">
-    <i class="fas fa-music"></i>
-  </div>
-
   <script>
-    // Set current year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-
     // Background Music
     const bgMusic = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
     
     // Set volume (0.0 to 1.0)
     bgMusic.volume = 0.3;
@@ -571,30 +415,11 @@
       if (playPromise !== undefined) {
         playPromise.catch(error => {
           console.log('Autoplay was prevented:', error);
-          // Show a tooltip or instructions to click to play
-          musicToggle.title = "Click to play music";
-          musicToggle.style.backgroundColor = "#ff0000";
+          // Start music on any user interaction
+          document.addEventListener('click', () => {
+            bgMusic.play().catch(e => console.log('Still prevented:', e));
+          }, { once: true });
         });
-      }
-    });
-
-    // Music toggle functionality
-    musicToggle.addEventListener('click', () => {
-      if (bgMusic.paused) {
-        bgMusic.play()
-          .then(() => {
-            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
-            musicToggle.style.backgroundColor = "var(--primary-color)";
-            musicToggle.title = "";
-          })
-          .catch(error => {
-            console.log('Playback failed:', error);
-            musicToggle.title = "Click blocked - try interacting with page first";
-          });
-      } else {
-        bgMusic.pause();
-        musicToggle.innerHTML = '<i class="fas fa-music-slash"></i>';
-        musicToggle.style.backgroundColor = "#555";
       }
     });
 
@@ -625,29 +450,6 @@
     
     // Initialize falling hearts
     createHearts();
-
-    // Start music on any user interaction if it was blocked
-    function startMusicOnInteraction() {
-      document.addEventListener('click', () => {
-        if (bgMusic.paused) {
-          bgMusic.play()
-            .then(() => {
-              musicToggle.innerHTML = '<i class="fas fa-music"></i>';
-              musicToggle.style.backgroundColor = "var(--primary-color)";
-            })
-            .catch(error => {
-              console.log('Playback still prevented:', error);
-            });
-        }
-      }, { once: true });
-    }
-
-    // Check if music is playing after 2 seconds, if not, set up interaction handler
-    setTimeout(() => {
-      if (bgMusic.paused) {
-        startMusicOnInteraction();
-      }
-    }, 2000);
   </script>
 </body>
 </html>
