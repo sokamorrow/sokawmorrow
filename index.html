@@ -218,6 +218,99 @@
       color: var(--highlight-color);
     }
 
+    .contact-section {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .contact-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: white;
+      background-color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      box-shadow: 0 4px 6px rgba(255, 107, 107, 0.3);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(255, 107, 107, 0.4);
+      background-color: var(--hover-color);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .copied-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(76, 175, 80, 0.9);
+      color: #ffffff;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      z-index: 100;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .copied-notification.show {
+      opacity: 1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--text-color);
+      margin-top: auto;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      color: var(--text-color);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--hover-color);
+      transform: translateY(-3px);
+    }
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .container {
@@ -234,6 +327,11 @@
       
       h2 {
         font-size: 1.5rem;
+      }
+      
+      .contact-buttons {
+        flex-direction: column;
+        align-items: center;
       }
       
       .letter-paragraph {
@@ -290,7 +388,7 @@
 <body>
   <!-- Background Video -->
   <div class="bg-video">
-    <video id="bgVideo" autoplay muted loop>
+    <video autoplay muted loop>
       <source src="images/background.mp4" type="video/mp4">
       Your browser does not support HTML5 video.
     </video>
@@ -320,7 +418,7 @@
         <p class="letter-paragraph">I cherish every moment we spent together. I really do.
           You were a wonderful experience. And an even better friend.
           I loved how your eyes would dilate when you looked at me.
-          You probably didn't even notice, but I did.</p>
+          You probably didn’t even notice, but I did.</p>
         
         <p class="letter-paragraph">There are things I regret—like never asking you to be my Valentine, even though I really wanted to. Or the times I said things that came out wrong, and you took them the wrong way. I wish I could take those moments back. I wish I could've explained myself better.</p>
         
@@ -335,18 +433,18 @@
         <p class="letter-paragraph">Trust is a beautiful thing, and I mishandled it. I let my doubts get the better of me when you probably never gave me a reason to doubt you at all.</p>
         
         <p class="letter-paragraph">But despite all that, you were a constant comfort, a light in my life.
-          You're my friend—and damn, a pretty good one.</p>
+          You’re my friend—and damn, a pretty good one.</p>
         
         <p class="letter-paragraph">These last few days I spent with you this April were some of the most memorable ones I've had. Thank you for still inviting me to come along, for still letting me be there—for aya'ing me to come and gala. That meant so much more to me than you probably realized.</p>
         
         <p class="letter-paragraph">And now, as everything winds down, I just want you to know:</p>
         
-        <p class="letter-paragraph">I don't think I can love someone the way I loved you. Maybe I never will.
-          But I'm thankful. I'm thankful for the memories, for the laughter, for the feelings, even the hard ones.</p>
+        <p class="letter-paragraph">I don’t think I can love someone the way I loved you. Maybe I never will.
+          But I’m thankful. I’m thankful for the memories, for the laughter, for the feelings, even the hard ones.</p>
         
         <p class="letter-paragraph">This is my confession, my goodbye, and my final thank you.
           Even if nothing more comes of this, even if this all fades with time,
-          you'll always have a place in my heart.</p>
+          you’ll always have a place in my heart.</p>
         
           <div class="signature">
             <p>With love,</p>
@@ -387,57 +485,71 @@
           </div>
         </div>
       </div>
-    </main>
-  </div>
 
   <!-- Audio Element (hidden) -->
-  <audio id="bgMusic" loop>
+  <audio id="bgMusic" loop autoplay>
     <source src="music/background.mp3" type="audio/mpeg">
-    <source src="music/background.ogg" type="audio/ogg">
-    <source src="music/background.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
   <script>
-    // Get media elements
-    const bgVideo = document.getElementById('bgVideo');
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Background Music
     const bgMusic = document.getElementById('bgMusic');
     
-    // Set volume (0.0 to 1.0)
-    bgMusic.volume = 0.3;
+    // Set volume (0.0 to 1.0) - adjust this value to change the volume
+    bgMusic.volume = 0.2; // 20% volume - change this number as needed
 
-    // Sync function
-    function syncMedia() {
-      // When video metadata is loaded
-      bgVideo.addEventListener('loadedmetadata', function() {
-        // When video starts playing
-        bgVideo.addEventListener('playing', function() {
-          // Sync audio to video current time
-          bgMusic.currentTime = bgVideo.currentTime % bgMusic.duration;
-          
-          // Play audio (muted first to satisfy autoplay policies)
-          bgMusic.muted = true;
-          const playPromise = bgMusic.play();
-          
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              bgMusic.muted = false;
-            }).catch(error => {
-              console.log('Autoplay was prevented:', error);
-              // Start on user interaction
-              document.addEventListener('click', function startAudio() {
-                bgMusic.currentTime = bgVideo.currentTime % bgMusic.duration;
-                bgMusic.play();
-                document.removeEventListener('click', startAudio);
-              }, { once: true });
-            });
-          }
+    // Try to autoplay the music (may be blocked by browser)
+    document.addEventListener('DOMContentLoaded', () => {
+      const playPromise = bgMusic.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log('Autoplay was prevented:', error);
+          // Music will start when user interacts with page
         });
-      });
-    }
+      }
+    });
 
-    // Initialize sync
-    syncMedia();
+    // Start music on any user interaction if it was blocked
+    document.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play().catch(error => {
+          console.log('Playback still prevented:', error);
+        });
+      }
+    }, { once: true });
+
+    // Create falling hearts
+    function createHearts() {
+      const heartsContainer = document.getElementById('hearts');
+      const heartCount = 20;
+      
+      for (let i = 0; i < heartCount; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-fall');
+        heart.innerHTML = '❤';
+        
+        // Random position and animation duration
+        const leftPos = Math.random() * 100;
+        const animDuration = 10 + Math.random() * 20;
+        const delay = Math.random() * 15;
+        const size = 10 + Math.random() * 20;
+        
+        heart.style.left = `${leftPos}%`;
+        heart.style.animationDuration = `${animDuration}s`;
+        heart.style.animationDelay = `${delay}s`;
+        heart.style.fontSize = `${size}px`;
+        
+        heartsContainer.appendChild(heart);
+      }
+    }
+    
+    // Initialize falling hearts
+    createHearts();
   </script>
 </body>
 </html>
