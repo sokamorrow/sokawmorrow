@@ -290,7 +290,7 @@
 <body>
   <!-- Background Video -->
   <div class="bg-video">
-    <video autoplay muted loop>
+    <video id="bgVideo" autoplay muted loop>
       <source src="images/background.mp4" type="video/mp4">
       Your browser does not support HTML5 video.
     </video>
@@ -388,9 +388,10 @@
         </div>
       </div>
     </main>
+  </div>
 
   <!-- Audio Element (hidden) -->
-  <audio id="bgMusic" loop autoplay>
+  <audio id="bgMusic" loop>
     <source src="music/background.mp3" type="audio/mpeg">
     <source src="music/background.ogg" type="audio/ogg">
     <source src="music/background.wav" type="audio/wav">
@@ -398,58 +399,45 @@
   </audio>
 
   <script>
-    // Background Music
+    // Get media elements
+    const bgVideo = document.getElementById('bgVideo');
     const bgMusic = document.getElementById('bgMusic');
     
     // Set volume (0.0 to 1.0)
     bgMusic.volume = 0.3;
 
-    // Try to autoplay the music
-    document.addEventListener('DOMContentLoaded', () => {
-      // First set the volume
-      bgMusic.volume = 0.3;
-      
-      // Then try to play
-      const playPromise = bgMusic.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.log('Autoplay was prevented:', error);
-          // Start music on any user interaction
-          document.addEventListener('click', () => {
-            bgMusic.play().catch(e => console.log('Still prevented:', e));
-          }, { once: true });
+    // Sync function
+    function syncMedia() {
+      // When video metadata is loaded
+      bgVideo.addEventListener('loadedmetadata', function() {
+        // When video starts playing
+        bgVideo.addEventListener('playing', function() {
+          // Sync audio to video current time
+          bgMusic.currentTime = bgVideo.currentTime % bgMusic.duration;
+          
+          // Play audio (muted first to satisfy autoplay policies)
+          bgMusic.muted = true;
+          const playPromise = bgMusic.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              bgMusic.muted = false;
+            }).catch(error => {
+              console.log('Autoplay was prevented:', error);
+              // Start on user interaction
+              document.addEventListener('click', function startAudio() {
+                bgMusic.currentTime = bgVideo.currentTime % bgMusic.duration;
+                bgMusic.play();
+                document.removeEventListener('click', startAudio);
+              }, { once: true });
+            });
+          }
         });
-      }
-    });
-
-    // Create falling hearts
-    function createHearts() {
-      const heartsContainer = document.getElementById('hearts');
-      const heartCount = 20;
-      
-      for (let i = 0; i < heartCount; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart-fall');
-        heart.innerHTML = '❤';
-        
-        // Random position and animation duration
-        const leftPos = Math.random() * 100;
-        const animDuration = 10 + Math.random() * 20;
-        const delay = Math.random() * 15;
-        const size = 10 + Math.random() * 20;
-        
-        heart.style.left = `${leftPos}%`;
-        heart.style.animationDuration = `${animDuration}s`;
-        heart.style.animationDelay = `${delay}s`;
-        heart.style.fontSize = `${size}px`;
-        
-        heartsContainer.appendChild(heart);
-      }
+      });
     }
-    
-    // Initialize falling hearts
-    createHearts();
+
+    // Initialize sync
+    syncMedia();
   </script>
 </body>
 </html>
