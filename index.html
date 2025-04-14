@@ -311,6 +311,34 @@
       transform: translateY(-3px);
     }
 
+    /* Music Toggle Button */
+    .music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .music-toggle:hover {
+      transform: scale(1.1);
+      background-color: var(--hover-color);
+    }
+
+    .music-toggle i {
+      color: white;
+      font-size: 1.2rem;
+    }
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .container {
@@ -418,7 +446,7 @@
         <p class="letter-paragraph">I cherish every moment we spent together. I really do.
           You were a wonderful experience. And an even better friend.
           I loved how your eyes would dilate when you looked at me.
-          You probably didn’t even notice, but I did.</p>
+          You probably didn't even notice, but I did.</p>
         
         <p class="letter-paragraph">There are things I regret—like never asking you to be my Valentine, even though I really wanted to. Or the times I said things that came out wrong, and you took them the wrong way. I wish I could take those moments back. I wish I could've explained myself better.</p>
         
@@ -433,18 +461,18 @@
         <p class="letter-paragraph">Trust is a beautiful thing, and I mishandled it. I let my doubts get the better of me when you probably never gave me a reason to doubt you at all.</p>
         
         <p class="letter-paragraph">But despite all that, you were a constant comfort, a light in my life.
-          You’re my friend—and damn, a pretty good one.</p>
+          You're my friend—and damn, a pretty good one.</p>
         
         <p class="letter-paragraph">These last few days I spent with you this April were some of the most memorable ones I've had. Thank you for still inviting me to come along, for still letting me be there—for aya'ing me to come and gala. That meant so much more to me than you probably realized.</p>
         
         <p class="letter-paragraph">And now, as everything winds down, I just want you to know:</p>
         
-        <p class="letter-paragraph">I don’t think I can love someone the way I loved you. Maybe I never will.
-          But I’m thankful. I’m thankful for the memories, for the laughter, for the feelings, even the hard ones.</p>
+        <p class="letter-paragraph">I don't think I can love someone the way I loved you. Maybe I never will.
+          But I'm thankful. I'm thankful for the memories, for the laughter, for the feelings, even the hard ones.</p>
         
         <p class="letter-paragraph">This is my confession, my goodbye, and my final thank you.
           Even if nothing more comes of this, even if this all fades with time,
-          you’ll always have a place in my heart.</p>
+          you'll always have a place in my heart.</p>
         
           <div class="signature">
             <p>With love,</p>
@@ -486,11 +514,40 @@
         </div>
       </div>
 
+      <div class="contact-section">
+        <h2>Stay in Touch</h2>
+        <p>If you'd ever like to talk again</p>
+        
+        <div class="contact-buttons">
+          <a href="#" class="btn"><i class="fas fa-envelope"></i> Email</a>
+          <a href="#" class="btn btn-outline"><i class="fas fa-comment"></i> Message</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Created with <span class="heart">❤</span> by JBaldo</p>
+      <p id="year"></p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+      </div>
+    </footer>
+  </div>
+
   <!-- Audio Element (hidden) -->
-  <audio id="bgMusic" loop autoplay>
+  <audio id="bgMusic" loop>
     <source src="music/background.mp3" type="audio/mpeg">
+    <source src="music/background.ogg" type="audio/ogg">
+    <source src="music/background.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
+
+  <!-- Music Toggle Button -->
+  <div class="music-toggle" id="musicToggle">
+    <i class="fas fa-music"></i>
+  </div>
 
   <script>
     // Set current year in footer
@@ -498,30 +555,48 @@
 
     // Background Music
     const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
     
-    // Set volume (0.0 to 1.0) - adjust this value to change the volume
-    bgMusic.volume = 0.2; // 20% volume - change this number as needed
+    // Set volume (0.0 to 1.0)
+    bgMusic.volume = 0.3;
 
-    // Try to autoplay the music (may be blocked by browser)
+    // Try to autoplay the music
     document.addEventListener('DOMContentLoaded', () => {
+      // First set the volume
+      bgMusic.volume = 0.3;
+      
+      // Then try to play
       const playPromise = bgMusic.play();
       
       if (playPromise !== undefined) {
         playPromise.catch(error => {
           console.log('Autoplay was prevented:', error);
-          // Music will start when user interacts with page
+          // Show a tooltip or instructions to click to play
+          musicToggle.title = "Click to play music";
+          musicToggle.style.backgroundColor = "#ff0000";
         });
       }
     });
 
-    // Start music on any user interaction if it was blocked
-    document.addEventListener('click', () => {
+    // Music toggle functionality
+    musicToggle.addEventListener('click', () => {
       if (bgMusic.paused) {
-        bgMusic.play().catch(error => {
-          console.log('Playback still prevented:', error);
-        });
+        bgMusic.play()
+          .then(() => {
+            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+            musicToggle.style.backgroundColor = "var(--primary-color)";
+            musicToggle.title = "";
+          })
+          .catch(error => {
+            console.log('Playback failed:', error);
+            musicToggle.title = "Click blocked - try interacting with page first";
+          });
+      } else {
+        bgMusic.pause();
+        musicToggle.innerHTML = '<i class="fas fa-music-slash"></i>';
+        musicToggle.style.backgroundColor = "#555";
       }
-    }, { once: true });
+    });
 
     // Create falling hearts
     function createHearts() {
@@ -550,6 +625,29 @@
     
     // Initialize falling hearts
     createHearts();
+
+    // Start music on any user interaction if it was blocked
+    function startMusicOnInteraction() {
+      document.addEventListener('click', () => {
+        if (bgMusic.paused) {
+          bgMusic.play()
+            .then(() => {
+              musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+              musicToggle.style.backgroundColor = "var(--primary-color)";
+            })
+            .catch(error => {
+              console.log('Playback still prevented:', error);
+            });
+        }
+      }, { once: true });
+    }
+
+    // Check if music is playing after 2 seconds, if not, set up interaction handler
+    setTimeout(() => {
+      if (bgMusic.paused) {
+        startMusicOnInteraction();
+      }
+    }, 2000);
   </script>
 </body>
 </html>
